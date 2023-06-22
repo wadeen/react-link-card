@@ -5,10 +5,9 @@ function App() {
   return (
     <div className={styles.wrapper}>
       <h1>Demo page</h1>
-      <LinkCard />
+      <LinkCard url={`https://www.wadeen.net/`} />
     </div>
   );
 }
 
 export default App;
- 
