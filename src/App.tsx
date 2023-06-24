@@ -1,5 +1,6 @@
 import styles from "./App.module.css";
 import LinkCard from "./components/LinkCard";
+import useFetchLinkData from "./components/hooks/useFetchLinkData";
 
 function App() {
   return (
@@ -37,9 +38,31 @@ function App() {
             );
           }}
         />
+
+        {/* カスタムフックの利用 */}
+        <CardItem />
       </div>
     </div>
   );
 }
 
 export default App;
+
+{
+  /* カスタムフックの利用 */
+}
+const CardItem = () => {
+  const { loading, error, data: linkCardData } = useFetchLinkData("https://wadeen.net");
+
+  if (error) return <p>ERROR!</p>;
+  if (loading) return <p>loading...</p>;
+
+  return (
+    <a href={`https://wadeen.net`} target="_blank">
+      <h2>{linkCardData?.title}</h2>
+      <img src={linkCardData?.ogp} alt="" />
+      <img src={linkCardData?.favicon} alt="" />
+      <p>{linkCardData?.description}</p>
+    </a>
+  );
+};
