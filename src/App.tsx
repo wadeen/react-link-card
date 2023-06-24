@@ -5,7 +5,9 @@ function App() {
   return (
     <div className={styles.wrapper}>
       <h1>Demo page</h1>
-      <LinkCard url={`https://www.wadeen.net/`} />
+      <div className={styles.container}>
+        <LinkCard  url={`https://www.wadeen.net`}  />
+      </div>
     </div>
   );
 }

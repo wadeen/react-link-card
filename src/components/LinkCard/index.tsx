@@ -1,9 +1,10 @@
+import { BASE_URL } from "../constants/base-url";
 import styles from "./index.module.css";
 import { AnchorHTMLAttributes, useEffect, useState } from "react";
 
 type LinkCardProps = {
   /**  */
-  url: string;
+  url: `http${string}`;
   /**  */
   target?: AnchorHTMLAttributes<HTMLAnchorElement>["target"];
 };
@@ -24,7 +25,8 @@ const LinkCard: React.FC<LinkCardProps> = ({ url, target }) => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(encodeURI(process.env.BASE_URL + url));
+        const res = await fetch(encodeURI(BASE_URL + url));
+        console.log("res: ", res);
         const data = await res.json();
         setFetchData(data);
       } catch (err) {

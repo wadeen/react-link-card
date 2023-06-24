@@ -1,3 +1,7 @@
 .wrapper {
-  background-color: tomato;
+}
+
+.container {
+  max-width: 800px;
+  margin-inline: auto;
 }
