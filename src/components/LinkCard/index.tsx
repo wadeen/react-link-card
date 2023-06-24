@@ -1,5 +1,4 @@
 import { BASE_URL } from "../constants/base-url";
-import styles from "./index.module.css";
 import { AnchorHTMLAttributes, useEffect, useState } from "react";
 
 type LinkCardProps = {
@@ -7,6 +6,8 @@ type LinkCardProps = {
   url: `http${string}`;
   /**  */
   target?: AnchorHTMLAttributes<HTMLAnchorElement>["target"];
+  /**  */
+  render: (props: { title?: string; description?: string; ogp?: string; favicon?: string; url?: string; error?: boolean; loading?: boolean }) => JSX.Element;
 };
 
 type FetchData = {
@@ -16,55 +17,37 @@ type FetchData = {
   description: string;
   /**  */
   ogp: string;
+  /**  */
+  favicon: string;
 };
 
-const LinkCard: React.FC<LinkCardProps> = ({ url, target }) => {
-  const [fetchData, setFetchData] = useState<FetchData | null>(null);
-  const [error, setError] = useState<boolean>(false);
+const LinkCard: React.FC<LinkCardProps> = ({ url, render }) => {
+  // const [fetchData, setFetchData] = useState<FetchData | null>(null);
+  // const [error, setError] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
+
+  const [fetchState, setFetchState] = useState<{ data: FetchData | null; error: boolean; loading: boolean }>({
+    data: null,
+    error: false,
+    loading: false,
+  });
 
   useEffect(() => {
     (async () => {
+      setFetchState({ data: null, error: false, loading: true });
       try {
         const res = await fetch(encodeURI(BASE_URL + url));
-        console.log("res: ", res);
         const data = await res.json();
-        setFetchData(data);
+        setFetchState({ data, error: false, loading: false });
       } catch (err) {
-        console.error("err: ", err);
-        setError(true);
+        setFetchState({ data: null, error: true, loading: false });
       }
     })();
   }, [url]);
 
-  if (!fetchData) {
-    return (
-      <div>
-        <img src="/loading.gif" alt="Loading" width={50} height={50} />
-      </div>
-    );
-  }
+  const { data: fetchData, error, loading } = fetchState;
 
-  return (
-    <>
-      {error ? (
-        <div>
-          <a href={url} className="link_card_error_url">
-            {url}
-          </a>
-        </div>
-      ) : (
-        <a href={url} className={styles.container} target={target}>
-          <div className={styles.textArea}>
-            <p className={styles.title}>{fetchData.title}</p>
-            <p className={styles.text}>{fetchData.description}</p>
-          </div>
-          <figure className={styles.figure}>
-            <img className={styles.imgStyle} src={fetchData.ogp} alt={fetchData.title || ""} />
-          </figure>
-        </a>
-      )}
-    </>
-  );
+  return render({ title: fetchData?.title, description: fetchData?.description, ogp: fetchData?.ogp, favicon: fetchData?.favicon, error, loading, url });
 };
 
 export default LinkCard;
