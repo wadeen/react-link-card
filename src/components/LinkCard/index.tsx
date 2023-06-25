@@ -1,68 +1,120 @@
+import { AnchorHTMLAttributes } from "react";
+import useFetchLinkData, { FetchLinkUrlType } from "../hooks/useFetchLinkData";
 import styles from "./index.module.css";
-import { AnchorHTMLAttributes, useEffect, useState } from "react";
 
 type LinkCardProps = {
-  /**  */
-  url: string;
-  /**  */
+  /** Target attribute specifies where to open the linked document. */
   target?: AnchorHTMLAttributes<HTMLAnchorElement>["target"];
-};
+  /** Tag name to use for the title. */
+  titleTagName?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  /** Position of the link card. */
+  position?: "center" | "left" | "right";
+} & FetchLinkUrlType;
 
-type FetchData = {
-  /**  */
-  title: string;
-  /**  */
-  description: string;
-  /**  */
-  ogp: string;
-};
+export const LinkCard = ({ url, target = "_blank", titleTagName = "h2", position = "center" }: LinkCardProps) => {
+  /** Call hook to fetch data from provided URL. */
+  const { loading, error, data: linkCardData } = useFetchLinkData(url);
 
-const LinkCard: React.FC<LinkCardProps> = ({ url, target }) => {
-  const [fetchData, setFetchData] = useState<FetchData | null>(null);
-  const [error, setError] = useState<boolean>(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(encodeURI(process.env.BASE_URL + url));
-        const data = await res.json();
-        setFetchData(data);
-      } catch (err) {
-        console.error("err: ", err);
-        setError(true);
-      }
-    })();
-  }, [url]);
-
-  if (!fetchData) {
-    return (
-      <div>
-        <img src="/loading.gif" alt="Loading" width={50} height={50} />
-      </div>
-    );
+  if (error) {
+    return <ErrorLink url={url} target={target} />;
   }
 
+  if (loading)
+    return (
+      <div className={styles.baseContainer} data-position={position}>
+        <div
+          className={styles.baseTextArea}
+          style={{
+            display: "block",
+            backgroundColor: "#fff",
+          }}
+        />
+        <div
+          className={styles.baseImg}
+          style={{
+            display: "block",
+            backgroundColor: "#ccc",
+            width: "160px",
+          }}
+        />
+      </div>
+    );
+
+  const Tag = titleTagName;
+
   return (
-    <>
-      {error ? (
-        <div>
-          <a href={url} className="link_card_error_url">
-            {url}
-          </a>
-        </div>
-      ) : (
-        <a href={url} className={styles.container} target={target}>
-          <div className={styles.textArea}>
-            <p className={styles.title}>{fetchData.title}</p>
-            <p className={styles.text}>{fetchData.description}</p>
+    <a href={url} target={target} className={styles.baseContainer} data-position={position}>
+      <div className={styles.baseTextArea}>
+        <div className={styles.baseTitleArea}>{linkCardData?.title && <Tag className={styles.baseTitle}>{linkCardData?.title}</Tag>}</div>
+        {linkCardData?.description && (
+          <div className={styles.baseDescArea}>
+            {linkCardData?.favicon && <img src={linkCardData?.favicon} alt="" width={24} height={24} />}
+            <p className={styles.baseText}>{linkCardData?.description}</p>
           </div>
-          <figure className={styles.figure}>
-            <img className={styles.imgStyle} src={fetchData.ogp} alt={fetchData.title || ""} />
-          </figure>
-        </a>
-      )}
-    </>
+        )}
+      </div>
+      {linkCardData?.ogp && <img src={linkCardData?.ogp} alt="" className={styles.baseImg} />}
+    </a>
   );
 };
 
-export default LinkCard;
+export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2", position = "center" }: LinkCardProps) => {
+  /** Call hook to fetch data from provided URL. */
+  const { loading, error, data: linkCardData } = useFetchLinkData(url);
+
+  if (error) {
+    return <ErrorLink url={url} target={target} />;
+  }
+  if (loading)
+    return (
+      <div className={styles.largeContainer} data-position={position}>
+        <div
+          className={styles.largeImg}
+          style={{
+            display: "block",
+            backgroundColor: "#ccc",
+            height: "250px",
+          }}
+        />
+        <div
+          className={styles.largeImg}
+          style={{
+            display: "block",
+            backgroundColor: "#fff",
+            height: "150px",
+          }}
+        />
+      </div>
+    );
+
+  const Tag = titleTagName;
+
+  return (
+    <a href={url} target={target} className={styles.largeContainer} data-position={position}>
+      {linkCardData?.ogp && <img src={linkCardData?.ogp} alt="" className={styles.largeImg} />}
+      <div className={styles.largeTextArea}>
+        {linkCardData?.title && (
+          <div className={styles.largeTitleArea}>
+            {linkCardData?.favicon && <img src={linkCardData?.favicon} alt="" width={24} height={24} />}
+            <Tag className={styles.largeTitle}>{linkCardData?.title}</Tag>
+          </div>
+        )}
+        {linkCardData?.description && <p className={styles.largeText}>{linkCardData?.description}</p>}
+      </div>
+    </a>
+  );
+};
+
+/** A component to handle and display error links. */
+const ErrorLink = ({ url, target }: Omit<LinkCardProps, "titleTagName">) => (
+  <a
+    href={url}
+    target={target}
+    className="_link-card-error"
+    style={{
+      textAlign: "center",
+    }}
+  >
+    {url}
+  </a>
+);
