@@ -1,59 +1,95 @@
-.container {
+/**
+* Standard card type
+*/
+
+.baseContainer {
   display: grid;
-  grid-template-columns: 1fr 150px;
-  border: 1px solid gray;
+  grid-template-columns: 1fr auto;
+  border: 1px solid rgb(200, 200, 200);
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 10px;
   color: #333;
   text-decoration: none;
   background-color: ghostwhite;
-  transition: 0.3s;
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr 100px;
-  }
+  transition: opacity 0.2s ease-in-out;
+  height: 120px;
 }
-.container:hover {
+.baseContainer:hover {
   opacity: 0.8;
 }
 
-.textArea {
+.baseTextArea {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
   padding: 20px;
   overflow: hidden;
-  @media (max-width: 768px) {
-    padding: 10px;
-  }
 }
 
-.figure {
-  width: 180px;
-  height: auto;
+.baseTitleArea {
+  display: flex;
+  align-items: center;
+  min-height: 2em;
+}
+
+.baseTitle {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
   margin: 0;
-  @media (max-width: 768px) {
-    width: 100px;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-.title {
-  font-size: 1rem;
-  font-weight: 800;
-  margin-bottom: 0;
+.baseText {
+  font-size: 13px;
+  margin: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: gray;
 }
 
-.text {
-  font-size: 0.7rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.baseDescArea {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  min-height: 2em;
 }
 
-.imgStyle {
-  display: grid;
-  place-content: center;
+.baseImg {
   object-fit: cover;
   object-position: center;
-  width: 100%;
+  width: auto;
   height: 100%;
+  max-width: 230px;
+  max-height: 120px;
 }
+
+@media (max-width: 520px) {
+  .baseTextArea {
+    padding: 10px;
+  }
+
+  .baseTitle {
+    font-size: 16px;
+  }
+
+  .baseImg {
+    max-width: 120px;
+  }
+  .baseText {
+    font-size: 11px;
+  }
+
+  .baseTextArea {
+    padding: 12px;
+  }
+}
+
+/**
+* Large card type
+*/
