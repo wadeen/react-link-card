@@ -3,15 +3,16 @@ import useFetchLinkData, { FetchLinkUrlType } from "../hooks/useFetchLinkData";
 import styles from "./index.module.css";
 
 type LinkCardProps = {
-  /**  */
+  /** Target attribute specifies where to open the linked document. */
   target?: AnchorHTMLAttributes<HTMLAnchorElement>["target"];
-  /**  */
+  /** Tag name to use for the title. */
   titleTagName?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  /**  */
+  /** Position of the link card. */
   position?: "center" | "left" | "right";
 } & FetchLinkUrlType;
 
 export const LinkCard = ({ url, target = "_blank", titleTagName = "h2", position = "center" }: LinkCardProps) => {
+  /** Call hook to fetch data from provided URL. */
   const { loading, error, data: linkCardData } = useFetchLinkData(url);
 
   if (error) {
@@ -20,7 +21,7 @@ export const LinkCard = ({ url, target = "_blank", titleTagName = "h2", position
 
   if (loading)
     return (
-      <div className={styles.baseContainer}>
+      <div className={styles.baseContainer} data-position={position}>
         <div
           className={styles.baseTextArea}
           style={{
@@ -58,6 +59,7 @@ export const LinkCard = ({ url, target = "_blank", titleTagName = "h2", position
 };
 
 export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2", position = "center" }: LinkCardProps) => {
+  /** Call hook to fetch data from provided URL. */
   const { loading, error, data: linkCardData } = useFetchLinkData(url);
 
   if (error) {
@@ -65,7 +67,7 @@ export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2", pos
   }
   if (loading)
     return (
-      <div className={styles.largeContainer}>
+      <div className={styles.largeContainer} data-position={position}>
         <div
           className={styles.largeImg}
           style={{
@@ -103,6 +105,7 @@ export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2", pos
   );
 };
 
+/** A component to handle and display error links. */
 const ErrorLink = ({ url, target }: Omit<LinkCardProps, "titleTagName">) => (
   <a
     href={url}
