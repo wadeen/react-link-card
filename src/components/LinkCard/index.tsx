@@ -8,9 +8,10 @@ type LinkCardProps = {
   /**  */
   titleTagName?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   /**  */
+  position?: "center" | "left" | "right";
 } & FetchLinkUrlType;
 
-export const LinkCard = ({ url, target = "_blank", titleTagName = "h2" }: LinkCardProps) => {
+export const LinkCard = ({ url, target = "_blank", titleTagName = "h2", position = "center" }: LinkCardProps) => {
   const { loading, error, data: linkCardData } = useFetchLinkData(url);
 
   if (error) {
@@ -41,7 +42,7 @@ export const LinkCard = ({ url, target = "_blank", titleTagName = "h2" }: LinkCa
   const Tag = titleTagName;
 
   return (
-    <a href={url} target={target} className={styles.baseContainer}>
+    <a href={url} target={target} className={styles.baseContainer} data-position={position}>
       <div className={styles.baseTextArea}>
         <div className={styles.baseTitleArea}>{linkCardData?.title && <Tag className={styles.baseTitle}>{linkCardData?.title}</Tag>}</div>
         {linkCardData?.description && (
@@ -56,7 +57,7 @@ export const LinkCard = ({ url, target = "_blank", titleTagName = "h2" }: LinkCa
   );
 };
 
-export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2" }: LinkCardProps) => {
+export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2", position = "center" }: LinkCardProps) => {
   const { loading, error, data: linkCardData } = useFetchLinkData(url);
 
   if (error) {
@@ -87,7 +88,7 @@ export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2" }: L
   const Tag = titleTagName;
 
   return (
-    <a href={url} target={target} className={styles.largeContainer}>
+    <a href={url} target={target} className={styles.largeContainer} data-position={position}>
       {linkCardData?.ogp && <img src={linkCardData?.ogp} alt="" className={styles.largeImg} />}
       <div className={styles.largeTextArea}>
         {linkCardData?.title && (

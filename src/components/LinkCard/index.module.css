@@ -15,7 +15,6 @@
   height: 120px;
   width: 100%;
   max-width: 1000px;
-  margin-inline: auto;
 }
 .baseContainer:hover {
   opacity: 0.8;
@@ -111,7 +110,6 @@
   max-height: 400px;
   width: 100%;
   max-width: 480px;
-  margin-inline: auto;
 }
 .largeContainer:hover {
   opacity: 0.8;
@@ -179,4 +177,15 @@
   .largeTextArea {
     padding: 12px;
   }
+}
+
+/* position */
+
+.baseContainer[data-position="center"],
+.largeContainer[data-position="center"] {
+  margin-inline: auto;
+}
+.baseContainer[data-position="right"],
+.largeContainer[data-position="right"] {
+  margin-left: auto;
 }
