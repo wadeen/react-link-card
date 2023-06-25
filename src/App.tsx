@@ -13,12 +13,15 @@ function App() {
             display: "flex",
             flexDirection: "column",
             gap: "20px",
+            marginBottom: "80px",
           }}
         >
           <LinkCard url={"https://wadeen.net"} titleTagName="h3" />
           <LinkCard url={"https://zenn.dev/wadeen"} />
           <LinkCard url={"https://zenn.dev/chot/articles/ddd2844ad3ae61"} />
           <LinkCard url={"https://obake.land/blog/20230216"} target="_blank" />
+          エラー発生させる。
+          <LinkCard url={"https://wadeen"} />
         </div>
 
         {/* サンプルの利用（大・縦並び） */}
@@ -33,6 +36,8 @@ function App() {
           <LinkCardLarge url={"https://zenn.dev/wadeen"} />
           <LinkCardLarge url={"https://zenn.dev/chot/articles/ddd2844ad3ae61"} />
           <LinkCardLarge url={"https://obake.land/blog/20230216"} target="_blank" />
+          エラー発生させる。
+          <LinkCardLarge url={"https://wadeen"} />
         </div>
         {/* カスタムフックの利用 */}
         {/* <CardItem url={"https://wadeen.net"} /> */}
