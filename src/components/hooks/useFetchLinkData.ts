@@ -18,7 +18,7 @@ type FetchData = {
 /**
  * Define the props for the hook.
  */
-type useFetchLinkDataProps = {
+export type FetchLinkUrlType = {
   /** The URL to fetch the data from */
   url: `http${string}`;
 };
@@ -26,7 +26,7 @@ type useFetchLinkDataProps = {
 /**
  * Custom hook to fetch data from a URL and extract the title, description, OGP image, and favicon.
  */
-const useFetchLinkData = (url: useFetchLinkDataProps["url"]) => {
+const useFetchLinkData = (url: FetchLinkUrlType["url"]) => {
   /**
    * Define state to store fetched data, loading and error status.
    */
