@@ -6,12 +6,12 @@ type LinkCardProps = {
   /** Target attribute specifies where to open the linked document. */
   target?: AnchorHTMLAttributes<HTMLAnchorElement>["target"];
   /** Tag name to use for the title. */
-  titleTagName?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  titleTagName?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p";
   /** Position of the link card. */
   position?: "center" | "left" | "right";
 } & FetchLinkUrlType;
 
-export const LinkCard = ({ url, target = "_blank", titleTagName = "h2", position = "center" }: LinkCardProps) => {
+export const LinkCard = ({ url, target = "_blank", titleTagName = "p", position = "center" }: LinkCardProps) => {
   /** Call hook to fetch data from provided URL. */
   const { loading, error, data: linkCardData } = useFetchLinkData(url);
 
@@ -58,7 +58,7 @@ export const LinkCard = ({ url, target = "_blank", titleTagName = "h2", position
   );
 };
 
-export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2", position = "center" }: LinkCardProps) => {
+export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "p", position = "center" }: LinkCardProps) => {
   /** Call hook to fetch data from provided URL. */
   const { loading, error, data: linkCardData } = useFetchLinkData(url);
 
@@ -93,12 +93,7 @@ export const LinkCardLarge = ({ url, target = "_blank", titleTagName = "h2", pos
     <a href={url} target={target} className={styles.largeContainer} data-position={position}>
       {linkCardData?.ogp && <img src={linkCardData?.ogp} alt="" className={styles.largeImg} />}
       <div className={styles.largeTextArea}>
-        {linkCardData?.title && (
-          <div className={styles.largeTitleArea}>
-            {linkCardData?.favicon && <img src={linkCardData?.favicon} alt="" width={24} height={24} />}
-            <Tag className={styles.largeTitle}>{linkCardData?.title}</Tag>
-          </div>
-        )}
+        {linkCardData?.title && <Tag className={styles.largeTitle}>{linkCardData?.title}</Tag>}
         {linkCardData?.description && <p className={styles.largeText}>{linkCardData?.description}</p>}
       </div>
     </a>

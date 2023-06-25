@@ -18,6 +18,7 @@ function App() {
           }}
         >
           <LinkCard url={"https://wadeen.net"} titleTagName="h3" />
+          <LinkCard url={"https://dev.to/ronanru/stop-using-expressjs-in-202-3kc"} titleTagName="h3" />
           <p>左寄せ</p>
           <LinkCard url={"https://zenn.dev/wadeen"} position="left" />
           <LinkCard url={"https://zenn.dev/chot/articles/ddd2844ad3ae61"} />
@@ -36,6 +37,7 @@ function App() {
           }}
         >
           <LinkCardLarge url={"https://wadeen.net"} titleTagName="h3" />
+          <LinkCardLarge url={"https://dev.to/ronanru/stop-using-expressjs-in-202-3kc"} titleTagName="h3" />
           <LinkCardLarge url={"https://zenn.dev/wadeen"} />
           <p>左寄せ</p>
           <LinkCardLarge url={"https://zenn.dev/chot/articles/ddd2844ad3ae61"} position="left" />
