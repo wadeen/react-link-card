@@ -1,6 +1,6 @@
 import styles from "./App.module.css";
 import { LinkCard, LinkCardLarge } from "./components/LinkCard";
-import useFetchLinkData, { FetchLinkUrlType } from "./components/hooks/useFetchLinkData";
+import useFetchLinkData, { FetchLinkUrlType } from "./hooks/useFetchLinkData";
 
 function App() {
   return (

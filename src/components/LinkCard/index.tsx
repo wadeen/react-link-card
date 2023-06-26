@@ -1,5 +1,5 @@
 import { AnchorHTMLAttributes } from "react";
-import useFetchLinkData, { FetchLinkUrlType } from "../hooks/useFetchLinkData";
+import useFetchLinkData, { FetchLinkUrlType } from "../../hooks/useFetchLinkData";
 import styles from "./index.module.css";
 
 type LinkCardProps = {
