@@ -33,7 +33,7 @@ const useFetchLinkData = (url: FetchLinkUrlType["url"]) => {
   const [fetchState, setFetchState] = useState<{ data: FetchData | null; error: boolean; loading: boolean }>({
     data: null,
     error: false,
-    loading: false,
+    loading: true,
   });
 
   /**
