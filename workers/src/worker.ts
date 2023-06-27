@@ -1,32 +1,49 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
-export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace;
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace;
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket;
-	//
-	// Example binding to a Service. Learn more at https://developers.cloudflare.com/workers/runtime-apis/service-bindings/
-	// MY_SERVICE: Fetcher;
-	//
-	// Example binding to a Queue. Learn more at https://developers.cloudflare.com/queues/javascript-apis/
-	// MY_QUEUE: Queue;
-}
-
 export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
+	async fetch(request: Request): Promise<Response> {
+		const url = new URL(request.url);
+
+		const targetUrl = url.searchParams.get('url');
+
+		if (!targetUrl) {
+			return new Response('URL parameter is missing', { status: 400 });
+		}
+
+		const resultFetchUrl = await fetch(targetUrl);
+
+		const ogpElementHandler = new OgpElementHandler();
+		const htmlRewriter = new HTMLRewriter().on('meta', ogpElementHandler).transform(resultFetchUrl);
+		await htmlRewriter.text();
+
+		const response = new Response(JSON.stringify(ogpElementHandler), {
+			headers: {
+				'content-type': 'application/json',
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+				'Cache-Control': 'public, max-age=604800, s-maxage=604800', // 7 days
+			},
+		});
+		return response;
 	},
 };
+
+class OgpElementHandler {
+	ogTitle: string | undefined;
+	ogDescription: string | undefined;
+	ogImage: string | undefined;
+	element(element: Element) {
+		if (element.tagName === 'meta') {
+			switch (element.getAttribute('property')) {
+				case 'og:title':
+					this.ogTitle = element.getAttribute('content') ?? '';
+					break;
+				case 'og:description':
+					this.ogDescription = element.getAttribute('content') ?? '';
+				default:
+					break;
+				case 'og:image':
+					this.ogImage = element.getAttribute('content') ?? '';
+					break;
+			}
+		}
+	}
+}
