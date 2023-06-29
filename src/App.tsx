@@ -1,6 +1,10 @@
 import styles from "./App.module.css";
-import { LinkCard, LinkCardLarge } from "./components/LinkCard";
-import useFetchLinkData, { FetchLinkUrlType } from "./hooks/useFetchLinkData";
+import { createLinkCard, createLinkCardLarge } from "./components/LinkCard";
+import createUseFetchLinkData, { FetchLinkUrlType } from "./hooks/useFetchLinkData";
+
+const LinkCard = createLinkCard("https://react-link-card.wadeen.workers.dev/?url=");
+const LinkCardLarge = createLinkCardLarge("https://react-link-card.deno.dev/api/metadata?url=");
+const useFetchLinkData = createUseFetchLinkData("https://react-link-card.wadeen.workers.dev/?url=");
 
 function App() {
   return (
