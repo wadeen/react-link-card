@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../constants/base-url";
+// import { BASE_URL } from "../constants/base-url";
 
 /**
  * Define the structure of fetched data.
@@ -26,7 +26,7 @@ export type FetchLinkUrlType = {
 /**
  * Custom hook to fetch data from a URL and extract the title, description, OGP image, and favicon.
  */
-const useFetchLinkData = (url: FetchLinkUrlType["url"]) => {
+const createUseFetchLinkData = (baseURL: string) => (url: FetchLinkUrlType["url"]) => {
   /**
    * Define state to store fetched data, loading and error status.
    */
@@ -45,7 +45,7 @@ const useFetchLinkData = (url: FetchLinkUrlType["url"]) => {
       setFetchState({ data: null, error: false, loading: true });
       try {
         // Fetch data
-        const res = await fetch(encodeURI(BASE_URL + url));
+        const res = await fetch(encodeURI(baseURL + url));
         // Parse response data as JSON
         const data = await res.json();
         // Set fetched data and loading status
@@ -61,4 +61,4 @@ const useFetchLinkData = (url: FetchLinkUrlType["url"]) => {
   return { ...fetchState };
 };
 
-export default useFetchLinkData;
+export default createUseFetchLinkData;
